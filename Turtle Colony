@@ -1,0 +1,237 @@
+Let's make a game!
+		name:Turtle Colony
+		by:Leaves333
+		desc:This is a random idle game involving turtles.<//>Hooray for turtles!
+		created:15/2/2018
+		updated:16/2/2018
+		version:0.7
+
+Settings
+        building cost increase:115%
+        building cost refund:0%
+ 
+Layout
+        use default
+ 
+Buttons
+
+        *grassButton
+                name:Gather Some Grass
+                desc:Click this button to gather some grass.
+				tag:grassClick
+                on click:yield 1 grass
+
+Resources
+
+		*grass
+				name:Grass
+				desc:Grass is tasty. Your turtles need it to eat.
+				show earned
+
+		*science
+				name:Science
+				desc:Science is awesome. Your turtles grow smarter with every drop of it you have.
+				show earned
+				hidden when 0
+
+		*stone
+				name:Stone
+				desc:A small stone that you can throw at people. Put many of these together to create many now things.
+				show earned
+				hidden when 0
+
+		*bug
+				name:Bug
+				desc:A small bug that your turtles brought back. Looks disgusting, but your turtles seem to like them.
+				show earned
+				hidden when 0
+
+		*crab
+				name:Crab
+				desc:An unlucky crab found walking on the shores of the beach and taken hostage by your turtle.
+				show earned
+				hidden when 0
+
+Buildings
+
+		//Grass Production
+
+		*grassFarm
+				name:Grass Farm
+				desc:A small grass farm that produces grass.<//><b>Effect:</b><.>Produces 0.5 grass per second.
+				tag:grassFarm
+				cost:10 grass
+				cost increase:150%
+				on tick:yield 0.5 grass
+				req:(grassButton:clicks)>5
+
+		//Science Production
+
+		*grassAnalyzer
+				name:Grass Analyzer
+				desc:Hire a turtle to analyze grass, generating science.<//><b>Effect:</b><.>Produces 0.1 science per second.<.>Increases science production by 2%.
+				tag:science
+				cost:100 grass
+				cost increase:200%
+				on tick:yield 0.1 science
+				passive:multiply science yield of tag:science by 1.02
+				req:grassFarm >= 1
+
+		*grassResearcher
+				name:Grass Researcher
+				desc:With the knowledge of agriculture, your turtles are now able to study grass more carefully.<//><b>Effect:</b><.>Produces 0.1 science per second.<.>Increases science production by 5%.
+				tag:science
+				cost:200 grass
+				cost increase:200%
+				on tick:yield 0.1 science
+				passive:multiply science yield of tag:science by 1.05
+				req:agriculture
+
+		*bugDissector
+				name:Bug Dissector
+				desc:With the knowledge of dissection, your turtles now can rupture the internal organs of bugs, releasing science.<//><b>Effect:</b><.>Produces 0.15 science per second.<.>Uses 0.5 bugs per second.<.>Increases science production by 10%.
+				cost:1000 grass
+				cost increase:200%
+				tag:science
+				on tick:yield 0.15 science
+				on tick:lose 0.5 bug
+				passive:multiply science yield of tag:science by 1.10
+				req:dissection 
+
+		//Turtle Peeps
+
+		*miner
+				name:Turtle Miner
+				desc:A specially trained turtle to nibble at the ground.<//><b>Effect:</b><.>Produces 0.1 stone per second.
+				cost:500 grass
+				cost increase:150%
+				on tick:yield 0.1 stone
+				req:mining
+
+		*hunter
+				name:Turtle Hunter
+				desc:A specially trained turtle to snap its jaws to trap poor harmless creatures.<//><b>Effect:</b><.>Produces 0.05 crab per second.<.>Produces 0.2 bugs per second.
+				cost:500 grass
+				cost increase:150%
+				on tick:yield 0.05 crab
+				on tick:yield 0.1 bug
+				req:hunting
+
+		//Grass Production Boosts
+
+		*grassFarmer
+				name:Grass Farmer
+				desc:Hire a turtle to help farm grass for you, making your grass farms produce 5% more grass.
+				tag:farmer
+				cost:100 grass
+				cost increase:200%
+				passive:multiply grass yield of tag:grassFarm by 1.05
+				req:expansion
+
+		*grassTrampler
+				name:Grass Trampler
+				desc:Hire a turtle to help trample the grass, making your grass grow 10% faster.
+				tag:farmer
+				cost:500 grass
+				cost increase:200%
+				passive:multiply grass yield of tag:grassFarm by 1.1
+				req:agriculture
+
+		*aqueduct
+				name:Aqueduct
+				desc:Construct an aqueduct to pump water to your grass farms, making your grass farms produce more grass.<//><b>Effect:</b><.>Increases grass production of your grass farms by 0.25
+				tag:construction
+				cost increase:200%
+				cost:1000 stone
+				passive:increase grass yield of tag:grassFarm by 0.25
+				req:construction
+
+		//Hunter Improvements
+
+		*hunterShack
+				name:Hunter Shack
+				desc:A nice shack for your hunters to hang out in.<//><b>Effect:</b><.>Multiplies production of Turtle Hunters by 1.1.
+				cost increase:200%
+				cost:1000 stone, 5000 grass
+				passive:multiply yield of hunter by 1.1
+				req:construction
+
+Upgrades
+
+		//Progression
+
+		*expansion
+				name:Expansion
+				desc:Learn to expand your farms, allowing you to create larger farms and attracting more turtles.
+				cost:30 science
+				req:grassAnalyzer
+
+		*agriculture
+				name:Agriculture
+				desc:Learn the ins and outs of farming grass, enabling you to farm grass much faster.
+				cost:150 science
+				req:expansion
+
+		*mining
+				name:Mining
+				desc:Teach your turtles to nibble feebly at the dirt, occasionally finding stones.
+				cost:1000 science
+				req:agriculture
+
+		*hunting
+				name:Hunting
+				desc:Teach your turtles to hunt for various creatures, enabling them to find a variety of different objects.
+				cost:2500 science
+				req:agriculture
+
+		*dissection
+				name:Dissection
+				desc:Cut up some bugs, releasing the juicy science out of them.
+				cost:10000 science
+				req:hunting
+
+		*construction
+				name:Construction
+				desc:You know those stones you found? Well, we finally found a way to put them to good use.
+				cost:500000 science
+				req:mining
+
+
+		//Grass Upgrades
+
+		*grassFarm1
+				name:Grassier Grass
+				desc:Your turtles step on the grass, making it grassier. Your Grass Farms will produce 0.2 more grass per second.
+				cost:10 science
+				passive:increase grass yield of grassFarm by 0.3
+				req:grassAnalyzer
+
+		*grassFarm2
+				name:Big Grass
+				desc:By making your turtles only the plant the seeds from the biggest grass, your average grass size has increased.<//><b>Effect:</b><.>Grass Farm grass production increased by 0.3.
+				cost:50 science
+				passive:increase grass yield of tag:grassFarm by 0.5
+				req:agriculture
+
+		*grassFarm3
+				name:Bigger Grass
+				desc:Okay, with years of selective grass planting, the average grass size has increase once again.<//><b>Effect:</b><.>Grass Farms grass production increased by 0.3.
+				cost:100000 science
+				passive:increase grass yield of tag:grassFarm by 0.5
+				req:grassFarm2
+
+		*grassFarm4
+				name:The Biggest Grass
+				desc:The grass we grow is so large, that even the mighty ant cowers in front of it!<//><b>Effect:</b><.>Grass Farms grass production x1.15
+				cost:1500000 science
+				passive:multiply grass yield of tag:grassFarm by 1.15
+				req:grassFarm3
+
+		//Miner Upgrades
+		
+		*miner1
+				name:Stone Jaws
+				desc:Make a set of stone jaws for your miners, enabling them to produce 0.1 more stone per second.
+				cost:750000 science
+				passive:increase miner yield of stone by 0.1
+				req:miner
